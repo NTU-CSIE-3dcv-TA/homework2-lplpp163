@@ -390,20 +390,6 @@ if __name__ == "__main__":
             median_trans = np.median(translation_error_list)
             print(f"Median Rotation Error: {median_rot:.3f} degrees")
             print(f"Median Translation Error: {median_trans:.3f} units")
-
-        # TODO: result visualization
-        Camera2World_Transform_Matrixs = []
-        for r, t in zip(r_list, t_list):
-            # TODO: calculate camera pose in world coordinate system
-            R_cam = R.from_rotvec(r).as_matrix()  # W2C rotation
-            T_cam = t  # W2C translation
-            R_world = R_cam.T
-            T_world = -R_world @ T_cam
-            c2w = np.eye(4)
-            c2w[:3,:3] = R_world
-            c2w[:3,3] = T_world
-            Camera2World_Transform_Matrixs.append(c2w)
-        visualization(Camera2World_Transform_Matrixs, points3D_df)
         
         # Save est_poses for Q2-2
         np.save('est_poses.npy', est_poses)
@@ -528,6 +514,7 @@ if __name__ == "__main__":
 
     # 只在 Q1/Q2 執行完後才進行視覺化
     if args.vis:
+        # TODO: result visualization
         est_poses = np.load('est_poses.npy', allow_pickle=True).item()
         points3D_df = pd.read_pickle("data/points3D.pkl")
 
